@@ -35,6 +35,9 @@ public class FavAdapter  extends RecyclerView.Adapter<FavAdapter.ViewHolder> {
         this.values = values;
         this.presenter=presenter;
     }
+    public void addMealAtPosition( Meal meal) {
+        values.add( meal);
+    }
 
 
     public void setList(List<Meal> values) {

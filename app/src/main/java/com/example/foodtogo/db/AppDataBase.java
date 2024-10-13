@@ -10,7 +10,7 @@ import com.example.foodtogo.model.Meal;
 
 
 
-@Database(entities = {Meal.class},version = 3)
+@Database(entities = {Meal.class},version = 4)
 public abstract class AppDataBase extends RoomDatabase {
 
 

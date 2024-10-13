@@ -92,10 +92,13 @@ public class MealActivity extends AppCompatActivity implements MealView {
         Intent intent = getIntent();
         String mealName = intent.getStringExtra("MEAL_NAME");
         String source = intent.getStringExtra("SOURCE");
-
         if (source != null && source.equals("FavAdapter")) {
             presenter.getMeal(mealName);
-        } else {
+        }
+        else if (source != null && source.equals("PlannerAdapter")){
+            presenter.getMealPlan(mealName);
+        }
+        else {
             presenter.getMealDetails(mealName);
         }
 
@@ -117,17 +120,15 @@ public class MealActivity extends AppCompatActivity implements MealView {
         collapsingToolbar.setTitle(meal.getStrMeal());
         txtCountry.setText( meal.getStrArea());
         txtCategory.setText(meal.getStrCategory());
+
         video.getSettings().setJavaScriptEnabled(true);
         video.setWebViewClient(new WebViewClient());
         String youtubeUrl = meal.getStrYoutube();
         video.loadUrl(youtubeUrl);
+
         blankText.setText(meal.getStrInstructions());
         Glide.with(this).load(meal.getStrMealThumb()).into(imgMealDetails);
     }
-
-
-
-
 
 
     public void showDataForFavMeal(LiveData<Meal> mealLiveData) {
@@ -148,37 +149,10 @@ public class MealActivity extends AppCompatActivity implements MealView {
                 addButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final Calendar c = Calendar.getInstance();
-
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                MealActivity.this,
-                                new DatePickerDialog.OnDateSetListener() {
-
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year,
-                                                          int monthOfYear, int dayOfMonth) {
-                                        Calendar calendar = Calendar.getInstance();
-                                        calendar.set(year, monthOfYear, dayOfMonth);
-
-                                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                        String selectedDate = dateFormat.format(calendar.getTime());
-                                        presenter.addMealsToPlan(meal, selectedDate);
-                                        Toast.makeText(MealActivity.this, "Meal added to your plan", Toast.LENGTH_SHORT).show();
-                                    }
-                                },
-
-                                year, month, day);
-
-                        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-
-
-                        datePickerDialog.show();
+                        presenter.showDatePickerAndAddMealToPlan(MealActivity.this,meal);
                     }
                 });
+
                 favButton.setOnClickListener(view -> {
                     Toast.makeText(MealActivity.this, "Meal Is Already In The Favorites", Toast.LENGTH_SHORT).show();
                 });
@@ -190,8 +164,8 @@ public class MealActivity extends AppCompatActivity implements MealView {
     public void showData(List<Meal> meals) {
         if (meals != null && !meals.isEmpty()) {
             Meal meal = meals.get(0);
-            measures=presenter.getMeasures(meal);
-            ingridents= presenter.getIngredients(meal);
+            measures = presenter.getMeasures(meal);
+            ingridents = presenter.getIngredients(meal);
             adapter.setList(measures,ingridents);
             adapter.notifyDataSetChanged();
             MealDetails(meal);
@@ -199,43 +173,11 @@ public class MealActivity extends AppCompatActivity implements MealView {
             imgMealDetails.setImageResource(R.drawable.ic_launcher_background);
             Toast.makeText(this, "No meal details available", Toast.LENGTH_SHORT).show();
         }
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar c = Calendar.getInstance();
-
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
-
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        MealActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(year, monthOfYear, dayOfMonth);
-
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                String selectedDate = dateFormat.format(calendar.getTime());
-                                presenter.addMealsToPlan(meals.get(0), selectedDate);
-                                Toast.makeText(MealActivity.this, "meal added to your plan ", Toast.LENGTH_SHORT).show();
-
-
-                            }
-                        },
-
-                        year, month, day);
-
-                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
-
-
-
-
-                datePickerDialog.show();
+                presenter.showDatePickerAndAddMealToPlan(MealActivity.this,meals.get(0));
             }
         });
 
@@ -244,7 +186,6 @@ public class MealActivity extends AppCompatActivity implements MealView {
             Toast.makeText(MealActivity.this, "Meal is added to favorites", Toast.LENGTH_SHORT).show();
         });
     }
-
 
     @Override
     public void showErrMsg(String error) {

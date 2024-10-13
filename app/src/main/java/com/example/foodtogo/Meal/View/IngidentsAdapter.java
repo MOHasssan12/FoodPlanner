@@ -87,25 +87,13 @@ public class IngidentsAdapter extends RecyclerView.Adapter<IngidentsAdapter.View
                 .override(150, 150)
                 .into(holder.imgIngridents);
 
+//        Context context = holder.itemView.getContext();
+
 
 
     }
 
-//    @Overrides
-//    public void onBindViewHolder(@NonNull CategoriesAdapter.ViewHolder holder, int position) {
-//        Log.d(TAG, "Binding view for position: " + position);
-//        Category category = values.get(position);
-//        holder.txtCategoryName.setText(category.getStrCategory());
-//
-//        Glide.with(context).load(category.getStrCategoryThumb()).into(holder.imgCategory);
-//
-//        holder.imgCategory.setOnClickListener(view -> {
-//            Intent intent = new Intent(context, CategoriesMealsActivity.class);
-//            String categoryName = category.getStrCategory();
-//            intent.putExtra("CATEGORY_NAME", categoryName);
-//            context.startActivity(intent);
-//        });
-//    }
+
     @Override
     public int getItemCount() {
         return (ingridents != null) ? ingridents.size() : 0;

@@ -78,6 +78,11 @@ public class Repo {
         localDataSource.insertMeal(meal);
     }
 
+    public void addMealToFav(Meal meal){
+        localDataSource.addMealToFav(meal);
+    }
+
+
     public LiveData<List<Meal>> getAllFavMeals(){
        return  localDataSource.getAllFavMeals();
     }
@@ -85,6 +90,7 @@ public class Repo {
     public LiveData<Meal> getMeal(String mealName){
         return  localDataSource.getMeal(mealName);
     }
+
 
     public void addMealToPlan(Meal meal , String date){
         localDataSource.addMealToPlan(meal,date);

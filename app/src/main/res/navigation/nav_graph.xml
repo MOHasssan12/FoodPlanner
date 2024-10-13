@@ -15,6 +15,12 @@
             app:destination="@id/searchFragment" />
     </fragment>
     <fragment
+        android:id="@+id/noNetworkFragment"
+        android:name="com.example.foodtogo.NoNetworkFragment"
+        android:label="No Network Fragment"
+        tools:layout="@layout/fragment_no_network" />
+
+    <fragment
         android:id="@+id/favFragment"
         android:name="com.example.foodtogo.Fav.View.FavFragment"
         android:label="fragment_fav"

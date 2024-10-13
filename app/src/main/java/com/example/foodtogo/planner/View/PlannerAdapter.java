@@ -41,6 +41,10 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.ViewHold
         return values.get(position);
     }
 
+    public void addMealAtPosition( Meal meal) {
+        values.add(meal);
+    }
+
     public void removeMealAtPosition(int position) {
         values.remove(position);
         notifyItemRemoved(position);
@@ -77,6 +81,7 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.ViewHold
             Intent intent = new Intent(context, MealActivity.class);
             String mealName = meal.getStrMeal();
             intent.putExtra("MEAL_NAME", mealName);
+            intent.putExtra("SOURCE", "PlannerAdapter");
             context.startActivity(intent);
         });
     }

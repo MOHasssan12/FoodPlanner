@@ -67,18 +67,29 @@ public class MealsLocalDataSource {
         new Thread(() -> dao.insertMeal(meal)).start();
     }
 
+    public void addMealToFav(Meal meal) {
+        meal.isFav = true;
+        new Thread(() -> dao.insertMeal(meal)).start();
+    }
+
     public LiveData<List<Meal>> getMealsForDate(String date){
         return dao.getMealsForDate(date);
     }
 
-
-    public LiveData<List<Meal>> getAllFavMeals(){
-        return favMeals;
+    public LiveData<List<Meal>> getAllFavMeals() {
+        return dao.getFavoriteMeals();
     }
+
+
+//    public LiveData<List<Meal>> getAllFavMeals(){
+//        return favMeals;
+//    }
 
     public LiveData<Meal> getMeal(String mealName) {
         return dao.getMealByName(mealName);
     }
+
+
 
 }
 

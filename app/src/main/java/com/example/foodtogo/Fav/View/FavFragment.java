@@ -72,6 +72,7 @@ public class FavFragment extends Fragment implements FavView {
                 return false;
             }
 
+
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
@@ -79,14 +80,19 @@ public class FavFragment extends Fragment implements FavView {
                 presenter.deleteFavMeal(deletedMeal);
                 adapter.removeMealAtPosition(position);
 
+                // Notify adapter of the item removed and range changed
+                adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, adapter.getItemCount());
+
                 Snackbar snackbar = Snackbar.make(recyclerView, "Meal deleted", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", v -> {
-
                     presenter.insertMeal(deletedMeal);
-                    adapter.notifyItemInserted(position);
+                    adapter.addMealAtPosition(deletedMeal);
+                    adapter.notifyDataSetChanged();
                 });
                 snackbar.show();
             }
+
         });
 
         itemTouchHelper.attachToRecyclerView(recyclerView);

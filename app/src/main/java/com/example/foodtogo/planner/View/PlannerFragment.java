@@ -73,8 +73,6 @@ public class PlannerFragment extends Fragment implements PlannerView {
         dayText7 = view.findViewById(R.id.day_text_7);
         addButton = view.findViewById(R.id.add_meal_fab);
 
-
-
                 addButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -94,11 +92,6 @@ public class PlannerFragment extends Fragment implements PlannerView {
         recyclerView.setAdapter(adapter);
 
         presenter = new PlannerPresenter(this, Repo.getInstance(MealsRemoteDataSource.getInstance(), MealsLocalDataSource.getInstance(requireContext())));
-
-
-
-
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -116,6 +109,7 @@ public class PlannerFragment extends Fragment implements PlannerView {
                 snackbar.setAction("UNDO", v -> {
 
                     presenter.insertMeal(deletedMeal);
+                    adapter.addMealAtPosition(deletedMeal);
                     adapter.notifyItemInserted(position);
                 });
                 snackbar.show();
@@ -124,15 +118,11 @@ public class PlannerFragment extends Fragment implements PlannerView {
 
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
-
         Calendar calendar = Calendar.getInstance();
         int today = calendar.get(Calendar.DAY_OF_WEEK);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         int maxDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
         String currentDate = dateFormat.format(calendar.getTime());
         presenter.getMealsForDate(currentDate);
 
@@ -159,6 +149,8 @@ public class PlannerFragment extends Fragment implements PlannerView {
                 friMonth = (dayOfMonth + 5 > maxDaysInMonth) ? (dayOfMonth + 5 - maxDaysInMonth) : dayOfMonth + 5;
                 textView_day_name.setText("Sunday");
                 textView_date.setText(String.valueOf(sunMonth));
+
+
                 break;
             case Calendar.MONDAY:
                 satMonth = (dayOfMonth - 2 < 1) ? maxDaysInMonth + (dayOfMonth - 2) : dayOfMonth - 2;

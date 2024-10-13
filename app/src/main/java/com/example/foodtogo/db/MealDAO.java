@@ -31,5 +31,9 @@ public interface MealDAO {
     LiveData<List<Meal>> getMealsForDate(String date);
 
 
+    @Query("SELECT * FROM meals_table WHERE isFav = 1")
+    LiveData<List<Meal>> getFavoriteMeals();
+
+
 
 }
